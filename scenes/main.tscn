@@ -118,6 +118,7 @@ tile_set = SubResource("TileSet_jyhfs")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("2_0wfyh")]
 position = Vector2(23, 296)
+collision_layer = 3
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("3_sugp2")

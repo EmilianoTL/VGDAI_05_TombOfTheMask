@@ -48,7 +48,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_tipki")
 }],
 "loop": true,
-"name": &"dead",
+"name": &"death",
 "speed": 5.0
 }, {
 "frames": [{
@@ -71,8 +71,7 @@ script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tipki")
-animation = &"idle"
-frame_progress = 0.6069076
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_85g3d")
