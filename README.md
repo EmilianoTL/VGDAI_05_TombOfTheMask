@@ -1,4 +1,4 @@
-# VGDAI_04_TombOfTheMask 🎭
+# VGDAI_05_TombOfTheMask 🎭
 
 **Course:** Video Game Development and Artificial Intelligence (VGDAI)
 **Engine:** Godot 4.x
