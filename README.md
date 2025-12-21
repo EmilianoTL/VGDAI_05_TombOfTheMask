@@ -21,8 +21,8 @@ This project is a recreation of the core mechanics of *Tomb of the Mask*. It foc
 ### 3. Game Architecture
 * [cite_start]**Game Manager:** A global script (Autoload) that tracks the score and stores the maximum height reached between runs[cite: 24, 25].
 * **Collectibles:** Two types of items implemented with signals:
-    * *Dots:* +1 Point.
-    * [cite_start]*Big Bubbles:* +5 Points[cite: 44].
+	* *Dots:* +1 Point.
+	* [cite_start]*Big Bubbles:* +5 Points[cite: 44].
 * **Hazards:** Spikes and obstacles detect the player via Groups/Areas. [cite_start]Death triggers a level restart after a short delay[cite: 38, 41].
 
 ### 4. Assets & Audio
