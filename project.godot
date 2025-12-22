@@ -14,12 +14,16 @@ config/name="VGDAI_04_TombOfTheMask"
 run/main_scene="uid://dak1i2uprsb2n"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 
+[autoload]
+
+GameManager="*res://scripts/autoloads/GameManager.gd"
+
 [display]
 
 window/size/viewport_width=560
 window/size/viewport_height=320
-window/size/window_width_override=720
-window/size/window_height_override=1280
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
 [global_group]
@@ -27,6 +31,12 @@ window/stretch/mode="canvas_items"
 Walls=""
 Spikes=""
 Player=""
+
+[layer_names]
+
+2d_physics/layer_1="Walls"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Damage"
 
 [rendering]
 

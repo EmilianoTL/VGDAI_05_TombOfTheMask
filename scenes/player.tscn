@@ -64,14 +64,17 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_85g3d"]
-size = Vector2(9.4375, 15.9375)
+size = Vector2(13, 13)
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 5
 script = ExtResource("1_g2els")
+speed = 300.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tipki")
-animation = &"death"
+animation = &"idle"
+offset = Vector2(0, -1.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_85g3d")

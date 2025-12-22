@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvvl1uvlvk2fr"]
+
+[ext_resource type="Script" uid="uid://titts5o82d2y" path="res://big_dot.gd" id="1_1c7to"]
+[ext_resource type="Texture2D" uid="uid://cwt1x8x8322gu" path="res://assets/Sprites/Fire Effect and Bullet 16x16.png" id="2_1fxdc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o6xl0"]
+radius = 8.0
+
+[node name="Dot" type="Area2D"]
+script = ExtResource("1_1c7to")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1fxdc")
+hframes = 36
+vframes = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_o6xl0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
