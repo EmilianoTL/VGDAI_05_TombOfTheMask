@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvvl1uvlvk2fr"]
+
+[ext_resource type="Script" uid="uid://titts5o82d2y" path="res://points.gd" id="1_6y5eg"]
+[ext_resource type="Texture2D" uid="uid://cwt1x8x8322gu" path="res://assets/Sprites/Fire Effect and Bullet 16x16.png" id="2_oao6e"]
+[ext_resource type="AudioStream" uid="uid://bwywv34bkqk3g" path="res://assets/Sound/pickupCoin.wav" id="3_oao6e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o6xl0"]
+radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oao6e"]
+atlas = ExtResource("2_oao6e")
+region = Rect2(0, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwvby"]
+atlas = ExtResource("2_oao6e")
+region = Rect2(160, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6kqo"]
+atlas = ExtResource("2_oao6e")
+region = Rect2(176, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xigx1"]
+atlas = ExtResource("2_oao6e")
+region = Rect2(192, 96, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yqlh2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oao6e")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwvby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6kqo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xigx1")
+}],
+"loop": false,
+"name": &"pickup",
+"speed": 8.0
+}]
+
+[node name="BigPoint" type="Area2D"]
+script = ExtResource("1_6y5eg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_o6xl0")
+
+[node name="SfxTrinket" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_oao6e")
+volume_db = -25.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_yqlh2")
+animation = &"pickup"
+frame = 2
+frame_progress = 1.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
