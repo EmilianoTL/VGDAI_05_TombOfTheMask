@@ -1,89 +1,86 @@
 extends CharacterBody2D
 
-# --- CONFIGURACIÓN ---
+#Exportado
 @export var speed: float = 400.0
+@export var trail_length: int = 7
 
-# --- REFERENCIAS ---
+#Referencias
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sfx_dead: AudioStreamPlayer2D = $SfxDead
+@onready var sfx_jump: AudioStreamPlayer2D = $SfxJump
+@onready var trail: Line2D = $Line2D # <--- Referencia a tu nuevo nodo
 
-# --- ESTADO ---
+# Variables
 var is_moving: bool = false
 var move_dir: Vector2 = Vector2.ZERO
 var normal: Vector2 = Vector2.UP
 
+#Config inicial
 func _ready() -> void:
-	# Iniciamos quieto y mirando a la derecha por defecto
 	anim_sprite.play("idle")
+	trail.top_level = true 
+	trail.clear_points()
 
 func _physics_process(delta: float) -> void:
+	#Puntos de trail
+	gestionar_trail()
+	#Logica de movimiento
 	if is_moving:
-		# Moverse hasta chocar
 		var collision = move_and_collide(move_dir * speed * delta)
-		
+		#Logica de colision
 		if collision:
-			# 1. Detectar qué tocamos
 			var collider = collision.get_collider()
+			normal = collision.get_normal()
 			
-			# Si es un pincho, morimos y salimos de la función
+			#Detectar picos
 			if collider.is_in_group("Spikes"):
 				morir()
 				return 
-			
-			# 2. Si es una pared segura: Nos detenemos
+				
+			#Dejar de mover
 			is_moving = false
 			anim_sprite.play("idle")
-			
-			# --- MAGIA DE ROTACIÓN (SOLO SPRITE) ---
-			# Obtenemos la flecha que apunta "hacia afuera" de la pared
-			normal = collision.get_normal()
-			
-			# Rotamos solo el dibujo para que los pies (Abajo/+90º) apunten a la pared.
-			# Usamos global_rotation para ignorar cualquier rotación previa del padre.
 			anim_sprite.global_rotation = normal.angle() + deg_to_rad(90)
-			
 	else:
-		# Si estamos quietos, escuchamos teclas
 		handle_input()
 
 func handle_input() -> void:
+	#Logica de entrada
 	var input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
 	if input == Vector2.ZERO:
 		return
-
-	# Evitar diagonales (priorizar el eje más fuerte)
+		
+	#Quedar con sola una direccion
 	if abs(input.x) > abs(input.y):
 		input.y = 0
 	else:
 		input.x = 0
-	
-	# Normalizar para tener dirección pura (1 o -1)
-	input = input.normalized()
-	
-	if -1*normal==input:
+	input = input.normalized()	
+	if -1 * normal == input:
 		return
-	
-	# Actualizar dirección
+		
+	#Hacer Dash
 	move_dir = input
 	is_moving = true
-	
-	# --- ROTACIÓN AL MOVERSE ---
-	# Reiniciamos la rotación del sprite para que mire hacia donde vamos.
-	# IMPORTANTE: Usamos 'look_at' sobre el 'anim_sprite', NO sobre 'self' (el cuerpo).
-	anim_sprite.global_rotation = 0 # Limpiamos rotación vieja de la pared
+	anim_sprite.global_rotation = 0
 	anim_sprite.look_at(global_position + move_dir)
-	
+	sfx_jump.play()
 	anim_sprite.play("dash")
 
+#Gestionar trail
+func gestionar_trail() -> void:
+	trail.add_point(global_position + 4*move_dir)
+	if trail.get_point_count() > trail_length:
+		trail.remove_point(0)
+
+#Funcion de morir
 func morir() -> void:
-	print("¡Has muerto!")
-	
 	is_moving = false
 	move_dir = Vector2.ZERO
-	set_physics_process(false) # Bloquea movimiento futuro
-	
+	set_physics_process(false) 
+	trail.clear_points() 
 	anim_sprite.play("death")
-	
-	# Reiniciar tras 1 segundo
+	sfx_dead.play()
+	anim_sprite.global_rotation = normal.angle() + deg_to_rad(90)
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()

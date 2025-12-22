@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://82qqt3xs5c43"]
+[gd_scene load_steps=14 format=3 uid="uid://82qqt3xs5c43"]
 
 [ext_resource type="Script" uid="uid://wttuul6inbwv" path="res://scripts/controller/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://cttoe8m4xdoep" path="res://assets/Sprites/Prototype_Character.png" id="2_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://klg0dn1hm7cw" path="res://assets/Sound/Hurt.wav" id="3_dqkch"]
+[ext_resource type="AudioStream" uid="uid://dli4quofnwitk" path="res://assets/Sound/Jump.wav" id="4_qlg0r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tbgi4"]
 atlas = ExtResource("2_qhqgy")
@@ -63,6 +65,10 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Curve" id="Curve_dqkch"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_85g3d"]
 size = Vector2(13, 13)
 
@@ -71,10 +77,26 @@ collision_mask = 5
 script = ExtResource("1_g2els")
 speed = 300.0
 
+[node name="SfxDead" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_dqkch")
+volume_db = -17.5
+
+[node name="SfxJump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_qlg0r")
+volume_db = -35.0
+pitch_scale = 1.5
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_tipki")
 animation = &"idle"
 offset = Vector2(0, -1.5)
+
+[node name="Line2D" type="Line2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.6745098)
+show_behind_parent = true
+width = 6.0
+width_curve = SubResource("Curve_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_85g3d")
