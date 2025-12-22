@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dvvl1uvlvk2fr"]
 
-[ext_resource type="Script" uid="uid://titts5o82d2y" path="res://points.gd" id="1_6y5eg"]
+[ext_resource type="Script" uid="uid://titts5o82d2y" path="res://scripts/points.gd" id="1_6y5eg"]
 [ext_resource type="Texture2D" uid="uid://cwt1x8x8322gu" path="res://assets/Sprites/Fire Effect and Bullet 16x16.png" id="2_oao6e"]
 [ext_resource type="AudioStream" uid="uid://bwywv34bkqk3g" path="res://assets/Sound/pickupCoin.wav" id="3_oao6e"]
 
@@ -49,6 +49,8 @@ animations = [{
 }]
 
 [node name="BigPoint" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("1_6y5eg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
