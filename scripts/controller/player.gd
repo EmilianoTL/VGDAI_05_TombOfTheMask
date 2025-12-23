@@ -9,20 +9,25 @@ extends CharacterBody2D
 @onready var sfx_dead: AudioStreamPlayer2D = $SfxDead
 @onready var sfx_jump: AudioStreamPlayer2D = $SfxJump
 @onready var trail: Line2D = $Line2D # <--- Referencia a tu nuevo nodo
+@onready var fader: ColorRect = $"../CanvasLayer2/ColorRect"
 
 # Variables
 var is_moving: bool = false
 var move_dir: Vector2 = Vector2.ZERO
 var normal: Vector2 = Vector2.UP
+var starty: int =392
 
 #Config inicial
 func _ready() -> void:
+	fader.modulate.a = 1.0
+	var entry_tween = create_tween()
+	entry_tween.tween_property(fader, "modulate:a", 0.0, 0.5)
 	anim_sprite.play("idle")
 	trail.top_level = true 
 	trail.clear_points()
 
 func _physics_process(delta: float) -> void:
-	#Puntos de trail
+	GameManager.update_height(global_position.y)
 	gestionar_trail()
 	#Logica de movimiento
 	if is_moving:
@@ -75,12 +80,25 @@ func gestionar_trail() -> void:
 
 #Funcion de morir
 func morir() -> void:
+	if not is_moving and not get_physics_process_delta_time(): return # Evitar múltiples ejecuciones
+	
 	is_moving = false
 	move_dir = Vector2.ZERO
-	set_physics_process(false) 
-	trail.clear_points() 
+	set_physics_process(false) # Detener lógica de juego
+	
+	# 1. Visuales y Sonido
 	anim_sprite.play("death")
 	sfx_dead.play()
-	anim_sprite.global_rotation = normal.angle() + deg_to_rad(90)
-	await get_tree().create_timer(1.0).timeout
-	get_tree().reload_current_scene()
+	if trail: trail.clear_points() # Limpiar rastro de partículas/líneas
+	
+	# 2. Efecto de fundido (Fade Out)
+	# Creamos un Tween que sube la opacidad del cuadro negro
+	var fade_tween = create_tween()
+	fade_tween.tween_property(fader, "modulate:a", 1.0, 0.5) # De 0 a 1 en 0.5 segundos
+	
+	# 3. Esperar el tiempo solicitado en la práctica
+	await get_tree().create_timer(2.0).timeout
+	
+	# 4. Reiniciar datos y escena
+	GameManager.reset_current_run() # Pone a 0 puntos y altura actual
+	get_tree().reload_current_scene() # Al recargar, los puntos y el mapa aparecen de nuevo

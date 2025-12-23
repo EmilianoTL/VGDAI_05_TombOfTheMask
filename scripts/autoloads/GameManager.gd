@@ -1,10 +1,24 @@
 extends Node
 
-var score = 0
+# Variables
+var current_points: int = 0
+var max_points: int = 0
+var current_height: int = 0
+var max_height: int = 0
+var pos_ini:Vector2 = Vector2(280,392)
 
-func add_score(points):
-	score += points
-	print("Score: ", score)
+#agregar puntos
+func add_score(points: int):
+	current_points += points
+	if current_points > max_points:
+		max_points = current_points
 
-func restart_game():
-	get_tree().reload_current_scene()
+func update_height(player_y: float):
+	current_height =max(current_height,abs(player_y-pos_ini.y)/16) # El "/10" es para simplificar el número
+	
+	if current_height > max_height:
+		max_height = current_height
+
+func reset_current_run():
+	current_points = 0
+	current_height = 0

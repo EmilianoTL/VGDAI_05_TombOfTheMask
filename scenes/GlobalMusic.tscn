@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://6d7rwf11lifr"]
+
+[ext_resource type="AudioStream" uid="uid://bi7lg76hy72o7" path="res://assets/Sound/Music.wav" id="1_epu53"]
+
+[node name="GlobalMusic" type="Node2D"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_epu53")
+volume_db = -25.0
+autoplay = true
